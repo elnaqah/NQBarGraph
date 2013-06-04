@@ -34,15 +34,24 @@
         // Initialization code
         self.barWidth=BAR_WIDTH_DEFAULT;
         self.spaceBetweenBars=BAR_SPACES_DEFAULT;
-        self.backgroundColor=[UIColor grayColor];
-        self.linesColor=[UIColor whiteColor];
-        self.numbersColor=[UIColor colorWithWhite:0.5 alpha:0.9];
-        self.numbersTextColor=[UIColor whiteColor];
-        self.dateColor=[UIColor whiteColor];
+        self.backgroundColor=[UIColor colorWithWhite:0.8 alpha:0.5];
+        self.linesColor=[UIColor blackColor];
+        self.numbersColor=[UIColor colorWithRed:0.4 green:0.4 blue:0.8 alpha:0.3];
+        self.numbersTextColor=[UIColor colorWithRed:0.3 green:0.9 blue:0.3 alpha:0.5];
+        self.dateColor=[UIColor colorWithRed:0.3 green:0.9 blue:0.3 alpha:0.5];
         self.ContentScroll=CGPointZero;
         self.layer.cornerRadius=20;
         self.layer.masksToBounds=YES;
         self.numberOfVerticalElements=8;
+        self.barColor=[UIColor colorWithRed:0.5 green:0.6 blue:0.5 alpha:1];
+        self.textColor=[UIColor colorWithRed:0.4 green:0.8 blue:0.8 alpha:0.5];
+        self.dottedLineColor=[UIColor colorWithRed:0.8 green:0.4 blue:0.4 alpha:1];
+        self.barOuterLine=[UIColor colorWithRed:0.4 green:0.4 blue:1 alpha:0.8];
+        self.datesBarText=@"Date";
+        self.tasksBarText=@"Tasks";
+        self.fontName=@"Helvetica";
+        self.dateFontSize=12;
+        self.titlesFontSize=20;
     }
     return self;
 }
@@ -62,61 +71,52 @@
     CGContextTranslateCTM(context, 0.0f, self.bounds.size.height);
     CGContextScaleCTM(context, 1, -1);
     
-    CGContextSetLineWidth(context, 1);
-    CGContextMoveToPoint(context, HORIZONTAL_START_LINE*minOfTwo, VERTICAL_START_LINE*minOfTwo);
-    [self.linesColor set];
-    
-    CGContextAddLineToPoint(context, HORIZONTAL_START_LINE*minOfTwo, self.bounds.size.height);
-    CGContextStrokePath(context);
-    
-    CGContextMoveToPoint(context, HORIZONTAL_START_LINE*minOfTwo, VERTICAL_START_LINE*minOfTwo);
-    CGContextAddLineToPoint(context, self.bounds.size.width, VERTICAL_START_LINE*minOfTwo);
-    CGContextStrokePath(context);
-    
-    CGFloat dashPattern[]= {3.0, 2};
+       
+    CGFloat dashPattern[]= {6.0, 5};
     CGContextSetLineWidth(context, 1.0);
     CGContextSetLineDash(context, 0.0, dashPattern, 2);
     
     
-    CGContextSelectFont (context,"Helvetica",12,kCGEncodingMacRoman);
+    CGContextSelectFont (context,[self.fontName UTF8String],self.dateFontSize,kCGEncodingMacRoman);
     //CGContextSetCharacterSpacing (context, 5);
     CGContextSetTextDrawingMode (context, kCGTextFill);
     
     
-    UIColor * backRectColor=[UIColor colorWithWhite:0.2 alpha:0.5];
-    [backRectColor set];
+    [self.dateColor set];
     CGContextShowTextAtPoint (context, (HORIZONTAL_START_LINE*minOfTwo)-35, VERTICAL_START_LINE*minOfTwo -15, [@"Day" UTF8String], 3);
     CGContextShowTextAtPoint (context, (HORIZONTAL_START_LINE*minOfTwo)-35, VERTICAL_START_LINE*minOfTwo -30, [@"Month" UTF8String], 5);
     //write tasks and date
-    CGContextSelectFont (context,"Helvetica",20,kCGEncodingMacRoman);
+    CGContextSelectFont (context,[self.fontName UTF8String],20,kCGEncodingMacRoman);
      CGContextSetTextDrawingMode (context, kCGTextFill);
-    [[UIColor whiteColor] set];
-    CGContextShowTextAtPoint(context, self.bounds.size.width/2-35, 10, [@"Date" UTF8String], 4);
+    [self.textColor set];
+    CGContextShowTextAtPoint(context, self.bounds.size.width/2-35, 10, [self.datesBarText UTF8String], 4);
     
     CGContextSetTextMatrix(context, CGAffineTransformMakeRotation(90*M_PI/180));
-    CGContextShowTextAtPoint(context, 20, self.bounds.size.height/2-35, [@"Tasks" UTF8String], 5);
+    CGContextShowTextAtPoint(context, self.titlesFontSize, self.bounds.size.height/2-35, [self.tasksBarText UTF8String], 5);
     CGContextSetTextMatrix(context, CGAffineTransformIdentity);
-    CGContextSelectFont (context,"Helvetica",12,kCGEncodingMacRoman);
+    CGContextSelectFont (context,[self.fontName UTF8String],self.dateFontSize,kCGEncodingMacRoman);
     
     for (int i=0; i<=self.numberOfVerticalElements; i++) {
         int height=VERTICALE_DATA_SPACES* i;
         float verticalLine=height+VERTICAL_START_LINE*minOfTwo-self.contentScroll.y;
         if (verticalLine>VERTICAL_START_LINE*minOfTwo) {
-            backRectColor=[UIColor colorWithWhite:0.8 alpha:1];
-            [backRectColor set];
+            [self.dottedLineColor set];
             CGContextMoveToPoint(context, HORIZONTAL_START_LINE*minOfTwo, verticalLine);
             CGContextAddLineToPoint(context, self.bounds.size.width, verticalLine);
             CGContextStrokePath(context);
             NSString * numberString=[NSString stringWithFormat:@"%d",i];
-            UIColor * backRectColor=[UIColor colorWithWhite:0.2 alpha:0.2];
-            [backRectColor set];
+            [self.numbersColor set];
             CGContextFillRect(context, CGRectMake((HORIZONTAL_START_LINE*minOfTwo)/2-4, verticalLine-8, 15, 15));
-            backRectColor=[UIColor colorWithWhite:0.8 alpha:1];
-            [backRectColor set];
+            [self.numbersTextColor set];
             CGContextShowTextAtPoint (context, (HORIZONTAL_START_LINE*minOfTwo)/2, verticalLine-5, [numberString UTF8String], 1);
         }
     }
-    [[UIColor whiteColor] set];
+    
+    
+    //set the line solid
+    float normal[1]={1};
+    CGContextSetLineDash(context,0,normal,0);
+    
     int index=0;
     //for (int index=0; index<numberOfDataObjects; index++) {
     for (NQData * dataObject in self.dataSource) {
@@ -128,8 +128,7 @@
         float xPosition=HORIZONTAL_START_LINE*minOfTwo+(index+1)* self.spaceBetweenBars + index * self.barWidth+self.contentScroll.x;
         
         if (xPosition>=HORIZONTAL_START_LINE*minOfTwo && xPosition<self.bounds.size.width ){
-        UIColor * backRectColor=[UIColor colorWithWhite:0.2 alpha:0.5];
-        [backRectColor set];
+            [self.dateColor set];
         
         NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:dataObject.date];
         NSInteger day = [components day];
@@ -143,17 +142,22 @@
         CGContextShowTextAtPoint (context, xPosition+self.barWidth/2-((month>9)?7:2), VERTICAL_START_LINE*minOfTwo -30, [monthString UTF8String], (month>9)?2:1);
 
         
-        [[UIColor whiteColor] set];
+        
         }
         
         if (height>0) {
             
             if (xPosition>=HORIZONTAL_START_LINE*minOfTwo && xPosition<self.bounds.size.width ) {
-                UIRectFill(CGRectMake(xPosition, VERTICAL_START_LINE*minOfTwo, self.barWidth, height));
+                CGRect barRect=CGRectMake(xPosition, VERTICAL_START_LINE*minOfTwo, self.barWidth, height);
+                [self.barOuterLine set];
+                CGContextStrokeRect(context, barRect);
+                [self.barColor set];
+                UIRectFill(barRect);
             }
             else if(xPosition+self.barWidth >HORIZONTAL_START_LINE*minOfTwo  && xPosition<HORIZONTAL_START_LINE*minOfTwo )
             {
-                NSLog(@"%f",self.barWidth-(HORIZONTAL_START_LINE*minOfTwo-xPosition));
+                
+                [self.barColor set];
                 UIRectFill(CGRectMake(HORIZONTAL_START_LINE*minOfTwo, VERTICAL_START_LINE*minOfTwo, self.barWidth-(HORIZONTAL_START_LINE*minOfTwo-xPosition), height));
             }
             
@@ -164,9 +168,20 @@
         index++;
     }
     
-    
-    
-    
+    // draw axes
+CGContextSetLineWidth(context, 1);
+CGContextMoveToPoint(context, HORIZONTAL_START_LINE*minOfTwo, VERTICAL_START_LINE*minOfTwo);
+[self.linesColor set];
+
+CGContextAddLineToPoint(context, HORIZONTAL_START_LINE*minOfTwo, self.bounds.size.height);
+CGContextStrokePath(context);
+
+CGContextMoveToPoint(context, HORIZONTAL_START_LINE*minOfTwo, VERTICAL_START_LINE*minOfTwo);
+CGContextAddLineToPoint(context, self.bounds.size.width, VERTICAL_START_LINE*minOfTwo);
+CGContextStrokePath(context);
+
+
+
 }
 
 

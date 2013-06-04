@@ -33,7 +33,7 @@
     NSDate * nowDate=[NSDate date];
     NQData * firstData=[NQData dataWithDate:nowDate andNumber:[NSNumber numberWithInt:3]];
     [dataArray addObject:firstData];
-    for (int i=86400; i<864000; i+=86400) {
+    for (int i=86400; i<8640000; i+=86400) {
         int rand=1+arc4random()%8;
         NQData * data=[NQData dataWithDate:[NSDate dateWithTimeInterval:i sinceDate:nowDate] andNumber:[NSNumber numberWithInt:rand]];
         [dataArray addObject:data];
