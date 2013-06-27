@@ -1,19 +1,22 @@
 NQBarGraphExample
 =================
-This is a controller that draw bar graph according to NQData objects giving to it.
-NQData object take two prameter date and number the number is the hight of the bare on the vertical axes and
-the date is the date of the bar the bar order is according to thier order in the array like this:
-Example:
-//intialize the graph view
- NQBarGraph * barGraph=[[NQBarGraph alloc] initWithFrame:self.view.bounds];
- //add it to the controller view
- [self.view addSubview:barGraph];
- //set the dataSource
- barGraph.dataSource=dataArray;
+This is a controller that draw bar graph according to NQData objects giving to it. NQData object take two parameter date and number the number is the hight of the bare on the vertical axes and the date is the date of the bar the bar order is according to thier order in the array like this: Example: 
+
+//initialise the graph view 
  
- This controller under MIT license just mention me in the app thanks
+NQBarGraph * barGraph=[[NQBarGraph alloc] initWithFrame:self.view.bounds];
+
+//add it to the controller view 
+
+[self.view addSubview:barGraph];
  
- The MIT License (MIT)
+//set the dataSource 
+
+barGraph.dataSource=dataArray;
+
+This controller under MIT license just mention me in the app thanks
+
+The MIT License (MIT)
 
 Copyright (c) 2013 ahmed elnaqah
 
