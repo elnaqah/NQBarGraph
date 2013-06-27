@@ -1,4 +1,4 @@
-NQBarGraphExample
+NQBarGraph
 =================
 
 This is a controller that draw bar graph according to NQData objects giving to it. 
