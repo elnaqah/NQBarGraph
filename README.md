@@ -1,7 +1,7 @@
 NQBarGraph
 =================
 
-This is a controller that draw bar graph according to NQData objects giving to it. 
+This is a control that draw bar graph according to NQData objects giving to it. 
 
 ![NQBarGraph](http://farm3.staticflickr.com/2859/9148749570_007902a0a2.jpg)
 
