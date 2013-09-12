@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>NQBarGraph by elnaqah</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/elnaqah/NQBarGraph">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/elnaqah/NQBarGraph/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/elnaqah/NQBarGraph/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>NQBarGraph</h1>
+          <p>That is an ios control that draw a bar graph for numbers on the vertical axes with date on the horizontal axes.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/elnaqah">elnaqah</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h3>
+<a name="use-it-in-your-app" class="anchor" href="#use-it-in-your-app"><span class="octicon octicon-link"></span></a>Use it in your app.</h3>
+
+<p>This is a control that draw bar graph according to NQData objects giving to it. </p>
+
+<p><img src="http://farm3.staticflickr.com/2859/9148749570_007902a0a2.jpg" alt="NQBarGraph"></p>
+
+<p><img src="http://farm8.staticflickr.com/7337/9146520251_07ac1957d1.jpg" alt="NQBarGraph"></p>
+
+<p>NQData object take two parameter date and number the number is the hight of the bare on the vertical 
+axes and the date is on the horizontal axes ,the bar order is according to thier order in the array like this: Example: </p>
+
+<p>initialise the graph view </p>
+
+<div class="highlight highlight-objc"><pre><span class="n">NQBarGraph</span> <span class="o">*</span> <span class="n">barGraph</span><span class="o">=</span><span class="p">[[</span><span class="n">NQBarGraph</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">initWithFrame</span><span class="o">:</span><span class="n">self</span><span class="p">.</span><span class="n">view</span><span class="p">.</span><span class="n">bounds</span><span class="p">];</span>
+</pre></div>
+
+<p>add it to the controller view </p>
+
+<div class="highlight highlight-objc"><pre><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">view</span> <span class="n">addSubview</span><span class="o">:</span><span class="n">barGraph</span><span class="p">];</span>
+</pre></div>
+
+<p>set the dataSource </p>
+
+<div class="highlight highlight-objc"><pre><span class="n">barGraph</span><span class="p">.</span><span class="n">dataSource</span><span class="o">=</span><span class="n">dataArray</span><span class="p">;</span>
+</pre></div>
+
+<p>This controller under MIT license just mention me in the app thanks</p>
+
+<p>The MIT License (MIT)</p>
+
+<p>Copyright (c) 2013 ahmed elnaqah</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.</p>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-42599206-5");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
