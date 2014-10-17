@@ -136,8 +136,9 @@
     
     
     //set the line solid
-    float normal[1]={1};
-    CGContextSetLineDash(context,0,normal,0);
+    CGFloat  normal=1;
+    
+    CGContextSetLineDash(context,0,&normal,0);
     
     int index=0;
     //for (int index=0; index<numberOfDataObjects; index++) {

@@ -10,6 +10,7 @@
 		C109F69F175C2F9D00C90072 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C109F69E175C2F9D00C90072 /* QuartzCore.framework */; };
 		C109F6A5175C3F0C00C90072 /* Icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = C109F6A4175C3F0C00C90072 /* Icon57.png */; };
 		C109F6A7175C3F1100C90072 /* Icon114.png in Resources */ = {isa = PBXBuildFile; fileRef = C109F6A6175C3F1100C90072 /* Icon114.png */; };
+		C17D5EEF18EDF30E00B0A6FE /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C17D5EEE18EDF30E00B0A6FE /* CoreText.framework */; };
 		C17DA98A176F4712000E9D3A /* NQBarGraph.m in Sources */ = {isa = PBXBuildFile; fileRef = C17DA987176F4712000E9D3A /* NQBarGraph.m */; };
 		C17DA98B176F4712000E9D3A /* NQData.m in Sources */ = {isa = PBXBuildFile; fileRef = C17DA989176F4712000E9D3A /* NQData.m */; };
 		C191EA07175AD1AF00E536B7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C191EA06175AD1AF00E536B7 /* UIKit.framework */; };
@@ -29,6 +30,7 @@
 		C109F69E175C2F9D00C90072 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C109F6A4175C3F0C00C90072 /* Icon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon57.png; path = ../Icon57.png; sourceTree = "<group>"; };
 		C109F6A6175C3F1100C90072 /* Icon114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon114.png; path = ../Icon114.png; sourceTree = "<group>"; };
+		C17D5EEE18EDF30E00B0A6FE /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		C17DA986176F4712000E9D3A /* NQBarGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NQBarGraph.h; sourceTree = "<group>"; };
 		C17DA987176F4712000E9D3A /* NQBarGraph.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NQBarGraph.m; sourceTree = "<group>"; };
 		C17DA988176F4712000E9D3A /* NQData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NQData.h; sourceTree = "<group>"; };
@@ -56,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C17D5EEF18EDF30E00B0A6FE /* CoreText.framework in Frameworks */,
 				C109F69F175C2F9D00C90072 /* QuartzCore.framework in Frameworks */,
 				C191EA07175AD1AF00E536B7 /* UIKit.framework in Frameworks */,
 				C191EA09175AD1AF00E536B7 /* Foundation.framework in Frameworks */,
@@ -97,6 +100,7 @@
 		C191EA05175AD1AF00E536B7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C17D5EEE18EDF30E00B0A6FE /* CoreText.framework */,
 				C109F69E175C2F9D00C90072 /* QuartzCore.framework */,
 				C191EA06175AD1AF00E536B7 /* UIKit.framework */,
 				C191EA08175AD1AF00E536B7 /* Foundation.framework */,
@@ -296,6 +300,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NQBarGraphExample/NQBarGraphExample-Prefix.pch";
 				INFOPLIST_FILE = "NQBarGraphExample/NQBarGraphExample-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -307,6 +312,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NQBarGraphExample/NQBarGraphExample-Prefix.pch";
 				INFOPLIST_FILE = "NQBarGraphExample/NQBarGraphExample-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
