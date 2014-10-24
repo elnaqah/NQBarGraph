@@ -31,6 +31,7 @@
 #import "NQBarGraph.h"
 #import "NQData.h"
 #import <QuartzCore/QuartzCore.h>
+#import <CoreText/CoreText.h>
 
 #define BAR_WIDTH_MAX 100
 #define BAR_WIDTH_MIN 3
@@ -97,27 +98,32 @@
     CGFloat dashPattern[]= {6.0, 5};
     CGContextSetLineWidth(context, 1.0);
     CGContextSetLineDash(context, 0.0, dashPattern, 2);
+    ///
+    UIFont * font=[UIFont fontWithName:self.fontName size:self.dateFontSize];
     
+    [self drawString:@"Day" atPoint:CGPointMake((HORIZONTAL_START_LINE*minOfTwo)-35, VERTICAL_START_LINE*minOfTwo -15) WithFont:font WithColor:self.dateColor WithContext:context];
     
-    CGContextSelectFont (context,[self.fontName UTF8String],self.dateFontSize,kCGEncodingMacRoman);
-    //CGContextSetCharacterSpacing (context, 5);
-    CGContextSetTextDrawingMode (context, kCGTextFill);
-    
-    
-    [self.dateColor set];
-    CGContextShowTextAtPoint (context, (HORIZONTAL_START_LINE*minOfTwo)-35, VERTICAL_START_LINE*minOfTwo -15, [@"Day" UTF8String], 3);
-    CGContextShowTextAtPoint (context, (HORIZONTAL_START_LINE*minOfTwo)-35, VERTICAL_START_LINE*minOfTwo -30, [@"Month" UTF8String], 5);
+    [self drawString:@"Month" atPoint:CGPointMake((HORIZONTAL_START_LINE*minOfTwo)-35, VERTICAL_START_LINE*minOfTwo -30) WithFont:font WithColor:self.dateColor WithContext:context];
+
     //write tasks and date
-    CGContextSelectFont (context,[self.fontName UTF8String],20,kCGEncodingMacRoman);
-     CGContextSetTextDrawingMode (context, kCGTextFill);
-    [self.textColor set];
-    CGContextShowTextAtPoint(context, self.bounds.size.width/2-35, 10, [self.datesBarText UTF8String], 4);
+    font=[UIFont fontWithName:self.fontName size:self.titlesFontSize];
     
-    CGContextSetTextMatrix(context, CGAffineTransformMakeRotation(90*M_PI/180));
-    CGContextShowTextAtPoint(context, self.titlesFontSize, self.bounds.size.height/2-35, [self.tasksBarText UTF8String], 5);
-    CGContextSetTextMatrix(context, CGAffineTransformIdentity);
-    CGContextSelectFont (context,[self.fontName UTF8String],self.dateFontSize,kCGEncodingMacRoman);
+    [self drawString:self.datesBarText atPoint:CGPointMake(self.bounds.size.width/2, 7) WithFont:font WithColor:self.textColor WithContext:context];
     
+    CGAffineTransform transform=CGAffineTransformMakeTranslation(25, self.bounds.size.height / 2.f);
+    CGFloat rotation = M_PI / 2.f;
+    transform = CGAffineTransformRotate(transform,rotation);
+    NSLog(@"height %f",self.bounds.size.height/2.f);
+    CGContextSaveGState(context);
+    CGContextConcatCTM(context, transform);
+    [self drawString:self.tasksBarText atPoint:CGPointMake(0, 0) WithFont:font WithColor:self.textColor WithContext:context];
+    
+    CGContextRestoreGState(context);
+    
+    
+
+    font=[UIFont fontWithName:self.fontName size:self.dateFontSize];
+    //vertical numbers
     for (int i=0; i<=self.numberOfVerticalElements; i++) {
         int height=VERTICALE_DATA_SPACES* i;
         float verticalLine=height+VERTICAL_START_LINE*minOfTwo-self.contentScroll.y;
@@ -129,8 +135,8 @@
             NSString * numberString=[NSString stringWithFormat:@"%d",i];
             [self.numbersColor set];
             CGContextFillRect(context, CGRectMake((HORIZONTAL_START_LINE*minOfTwo)/2-4, verticalLine-8, 15, 15));
-            [self.numbersTextColor set];
-            CGContextShowTextAtPoint (context, (HORIZONTAL_START_LINE*minOfTwo)/2, verticalLine-5, [numberString UTF8String], 1);
+
+            [self drawString:numberString atPoint:CGPointMake((HORIZONTAL_START_LINE*minOfTwo)/2+4, verticalLine-8) WithFont:font WithColor:self.numbersTextColor WithContext:context];
         }
     }
     
@@ -161,8 +167,9 @@
         NSString * monthString=[NSString stringWithFormat:@"%d",month];
 
         
-        CGContextShowTextAtPoint (context, xPosition+self.barWidth/2-2, VERTICAL_START_LINE*minOfTwo -15, [dayString UTF8String], 1);
-        CGContextShowTextAtPoint (context, xPosition+self.barWidth/2-((month>9)?7:2), VERTICAL_START_LINE*minOfTwo -30, [monthString UTF8String], (month>9)?2:1);
+        [self drawString:dayString atPoint:CGPointMake(xPosition+self.barWidth/2, VERTICAL_START_LINE*minOfTwo-15) WithFont:font WithColor:self.numbersTextColor WithContext:context];
+
+        [self drawString:monthString atPoint:CGPointMake(xPosition+self.barWidth/2, VERTICAL_START_LINE*minOfTwo -30) WithFont:font WithColor:self.numbersTextColor WithContext:context];
 
         
         
@@ -266,5 +273,28 @@ CGContextStrokePath(context);
 }
 
 
-
+#pragma mark draw attributed string
+-(void) drawString:(NSString *) string atPoint:(CGPoint) point WithFont:(UIFont *) font WithColor:(UIColor *) color WithContext:(CGContextRef) context
+{
+    
+    NSDictionary * attribut=@{NSForegroundColorAttributeName:color,NSFontAttributeName:font};
+    
+    CGSize sizeOfStr=[string sizeWithAttributes:attribut];
+    CGPathRef path=CGPathCreateWithRect(CGRectMake(point.x-(sizeOfStr.width/2), point.y, sizeOfStr.width, sizeOfStr.height+2), &CGAffineTransformIdentity);
+    //debug
+//    CGContextFillRect(context, CGRectMake(point.x-(sizeOfStr.width/2), point.y, sizeOfStr.width, sizeOfStr.height+2));
+    
+    NSAttributedString * dateAttString=[[NSAttributedString alloc] initWithString:string attributes:attribut];
+    
+   
+    CTFramesetterRef framesetter =CTFramesetterCreateWithAttributedString((CFAttributedStringRef)dateAttString);
+    CTFrameRef frame =CTFramesetterCreateFrame(framesetter,CFRangeMake(0, [dateAttString length]), path, NULL);
+    
+    CTFrameDraw(frame, context);
+    
+    //release
+    CFRelease(frame);
+    CFRelease(path);
+    CFRelease(framesetter);
+}
 @end
