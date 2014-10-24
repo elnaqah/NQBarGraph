@@ -94,7 +94,7 @@
     CGContextTranslateCTM(context, 0.0f, self.bounds.size.height);
     CGContextScaleCTM(context, 1, -1);
     
-       
+    
     CGFloat dashPattern[]= {6.0, 5};
     CGContextSetLineWidth(context, 1.0);
     CGContextSetLineDash(context, 0.0, dashPattern, 2);
@@ -104,7 +104,7 @@
     [self drawString:@"Day" atPoint:CGPointMake((HORIZONTAL_START_LINE*minOfTwo)-35, VERTICAL_START_LINE*minOfTwo -15) WithFont:font WithColor:self.dateColor WithContext:context];
     
     [self drawString:@"Month" atPoint:CGPointMake((HORIZONTAL_START_LINE*minOfTwo)-35, VERTICAL_START_LINE*minOfTwo -30) WithFont:font WithColor:self.dateColor WithContext:context];
-
+    
     //write tasks and date
     font=[UIFont fontWithName:self.fontName size:self.titlesFontSize];
     
@@ -121,7 +121,7 @@
     CGContextRestoreGState(context);
     
     
-
+    
     font=[UIFont fontWithName:self.fontName size:self.dateFontSize];
     //vertical numbers
     for (int i=0; i<=self.numberOfVerticalElements; i++) {
@@ -135,7 +135,7 @@
             NSString * numberString=[NSString stringWithFormat:@"%d",i];
             [self.numbersColor set];
             CGContextFillRect(context, CGRectMake((HORIZONTAL_START_LINE*minOfTwo)/2-4, verticalLine-8, 15, 15));
-
+            
             [self drawString:numberString atPoint:CGPointMake((HORIZONTAL_START_LINE*minOfTwo)/2+4, verticalLine-8) WithFont:font WithColor:self.numbersTextColor WithContext:context];
         }
     }
@@ -147,7 +147,8 @@
     CGContextSetLineDash(context,0,&normal,0);
     
     int index=0;
-    //for (int index=0; index<numberOfDataObjects; index++) {
+    
+    NSString * yearString=@"";
     for (NQData * dataObject in self.dataSource) {
         int height=VERTICALE_DATA_SPACES* [dataObject.number intValue];
         
@@ -158,22 +159,22 @@
         
         if (xPosition>=HORIZONTAL_START_LINE*minOfTwo && xPosition<self.bounds.size.width ){
             [self.dateColor set];
-        
-        NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:dataObject.date];
-        NSInteger day = [components day];
-        NSInteger month = [components month];
-
-        NSString * dayString=[NSString stringWithFormat:@"%d",day];
-        NSString * monthString=[NSString stringWithFormat:@"%d",month];
-
-        
-        [self drawString:dayString atPoint:CGPointMake(xPosition+self.barWidth/2, VERTICAL_START_LINE*minOfTwo-15) WithFont:font WithColor:self.numbersTextColor WithContext:context];
-
-        [self drawString:monthString atPoint:CGPointMake(xPosition+self.barWidth/2, VERTICAL_START_LINE*minOfTwo -30) WithFont:font WithColor:self.numbersTextColor WithContext:context];
-
-        
-        
+            
+            NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:dataObject.date];
+            NSInteger day = [components day];
+            NSInteger month = [components month];
+            NSInteger year=[components year];
+            
+            NSString * dayString=[NSString stringWithFormat:@"%d",day];
+            NSString * monthString=[NSString stringWithFormat:@"%d",month];
+            yearString=[NSString stringWithFormat:@"%d",year];
+            
+            [self drawString:dayString atPoint:CGPointMake(xPosition+self.barWidth/2, VERTICAL_START_LINE*minOfTwo-15) WithFont:font WithColor:self.numbersTextColor WithContext:context];
+            
+            [self drawString:monthString atPoint:CGPointMake(xPosition+self.barWidth/2, VERTICAL_START_LINE*minOfTwo -30) WithFont:font WithColor:self.numbersTextColor WithContext:context];
+            
         }
+
         
         if (height>0) {
             
@@ -191,27 +192,30 @@
                 UIRectFill(CGRectMake(HORIZONTAL_START_LINE*minOfTwo, VERTICAL_START_LINE*minOfTwo, self.barWidth-(HORIZONTAL_START_LINE*minOfTwo-xPosition), height));
             }
             
-           
+            
             
         }
-
+        
         index++;
     }
     
+    //draw year
+    [self drawString:yearString atPoint:CGPointMake((HORIZONTAL_START_LINE*minOfTwo)-35, VERTICAL_START_LINE*minOfTwo -45) WithFont:font WithColor:self.numbersTextColor WithContext:context];
+    
     // draw axes
-CGContextSetLineWidth(context, 1);
-CGContextMoveToPoint(context, HORIZONTAL_START_LINE*minOfTwo, VERTICAL_START_LINE*minOfTwo);
-[self.linesColor set];
-
-CGContextAddLineToPoint(context, HORIZONTAL_START_LINE*minOfTwo, self.bounds.size.height);
-CGContextStrokePath(context);
-
-CGContextMoveToPoint(context, HORIZONTAL_START_LINE*minOfTwo, VERTICAL_START_LINE*minOfTwo);
-CGContextAddLineToPoint(context, self.bounds.size.width, VERTICAL_START_LINE*minOfTwo);
-CGContextStrokePath(context);
-
-
-
+    CGContextSetLineWidth(context, 1);
+    CGContextMoveToPoint(context, HORIZONTAL_START_LINE*minOfTwo, VERTICAL_START_LINE*minOfTwo);
+    [self.linesColor set];
+    
+    CGContextAddLineToPoint(context, HORIZONTAL_START_LINE*minOfTwo, self.bounds.size.height);
+    CGContextStrokePath(context);
+    
+    CGContextMoveToPoint(context, HORIZONTAL_START_LINE*minOfTwo, VERTICAL_START_LINE*minOfTwo);
+    CGContextAddLineToPoint(context, self.bounds.size.width, VERTICAL_START_LINE*minOfTwo);
+    CGContextStrokePath(context);
+    
+    
+    
 }
 
 
@@ -243,8 +247,8 @@ CGContextStrokePath(context);
     float xDiffrance=touchLocation.x-prevouseLocation.x;
     float yDiffrance=touchLocation.y-prevouseLocation.y;
     
-        _contentScroll.x+=xDiffrance;
-        _contentScroll.y+=yDiffrance;
+    _contentScroll.x+=xDiffrance;
+    _contentScroll.y+=yDiffrance;
     
     if (_contentScroll.x >0) {
         _contentScroll.x=0;
@@ -282,11 +286,11 @@ CGContextStrokePath(context);
     CGSize sizeOfStr=[string sizeWithAttributes:attribut];
     CGPathRef path=CGPathCreateWithRect(CGRectMake(point.x-(sizeOfStr.width/2), point.y, sizeOfStr.width, sizeOfStr.height+2), &CGAffineTransformIdentity);
     //debug
-//    CGContextFillRect(context, CGRectMake(point.x-(sizeOfStr.width/2), point.y, sizeOfStr.width, sizeOfStr.height+2));
+    //    CGContextFillRect(context, CGRectMake(point.x-(sizeOfStr.width/2), point.y, sizeOfStr.width, sizeOfStr.height+2));
     
     NSAttributedString * dateAttString=[[NSAttributedString alloc] initWithString:string attributes:attribut];
     
-   
+    
     CTFramesetterRef framesetter =CTFramesetterCreateWithAttributedString((CFAttributedStringRef)dateAttString);
     CTFrameRef frame =CTFramesetterCreateFrame(framesetter,CFRangeMake(0, [dateAttString length]), path, NULL);
     
